@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
 
 export async function POST(request) {
   try {
@@ -13,21 +12,16 @@ export async function POST(request) {
       );
     }
 
-    // Save to database
-    const submission = await prisma.contactSubmission.create({
-      data: {
-        name,
-        email,
-        phone,
-        serviceType: serviceType || "General Query",
-        message,
-      },
-    });
+    // TODO: Re-enable database storage once Prisma + DB are configured
+    // const { prisma } = await import("@/lib/prisma");
+    // const submission = await prisma.contactSubmission.create({
+    //   data: { name, email, phone, serviceType: serviceType || "General Query", message },
+    // });
 
     return NextResponse.json({
       success: true,
       message: "Contact form submitted successfully",
-      id: submission.id,
+      // id: submission.id,
     });
   } catch (error) {
     console.error("Contact API Error:", error);

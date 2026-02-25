@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   Package, Search, Loader2, MapPin, Calendar,
@@ -10,6 +10,18 @@ import {
 import toast from "react-hot-toast";
 
 export default function TrackPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <Loader2 className="h-8 w-8 animate-spin text-primary-blue" />
+      </div>
+    }>
+      <TrackPageContent />
+    </Suspense>
+  );
+}
+
+function TrackPageContent() {
   const searchParams = useSearchParams();
   const [trackingNumber, setTrackingNumber] = useState("");
   const [loading, setLoading] = useState(false);

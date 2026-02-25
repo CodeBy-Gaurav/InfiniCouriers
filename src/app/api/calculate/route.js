@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
 
 export async function POST(request) {
   try {
@@ -67,23 +66,19 @@ export async function POST(request) {
       chargeableWeight,
     };
 
-    try {
-      await prisma.priceCalculation.create({
-        data: {
-          originPincode,
-          destinationPincode,
-          weight: actualWeight,
-          length: length ? parseFloat(length) : null,
-          width: width ? parseFloat(width) : null,
-          height: height ? parseFloat(height) : null,
-          serviceType,
-          calculatedPrice: totalPrice,
-          transitDays: daysToAdd,
-        },
-      });
-    } catch (dbError) {
-      console.error("Database error (non-critical):", dbError);
-    }
+    // TODO: Re-enable database logging once Prisma + DB are configured
+    // try {
+    //   const { prisma } = await import("@/lib/prisma");
+    //   await prisma.priceCalculation.create({
+    //     data: { originPincode, destinationPincode, weight: actualWeight,
+    //       length: length ? parseFloat(length) : null,
+    //       width: width ? parseFloat(width) : null,
+    //       height: height ? parseFloat(height) : null,
+    //       serviceType, calculatedPrice: totalPrice, transitDays: daysToAdd },
+    //   });
+    // } catch (dbError) {
+    //   console.error("Database error (non-critical):", dbError);
+    // }
 
     return NextResponse.json(result);
   } catch (error) {
